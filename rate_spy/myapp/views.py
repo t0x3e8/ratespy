@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .forms import RatingForm
+from .utils import save_to_database, process_form_data
 
 # Create your views here.
 def index_view(request):
@@ -13,10 +14,13 @@ def rating_view(request):
     if request.method == 'POST':
         form = RatingForm(request.POST)
         if form.is_valid():
-            # Do something with the form data
-            # For example, save it to the database
-            # You can access form.cleaned_data['link_to_rating_app'] and form.cleaned_data['frequency_of_spy']
-            pass
+            save_to_database(
+                form.cleaned_data['name'],
+                form.cleaned_data['url'],
+                form.cleaned_data['interval_in_minutes'])
+            
+            process_form_data(form.cleaned_data)
+            form = RatingForm()  
     else:
         form = RatingForm()
     return render(request, 'rating.html', {'form': form})
