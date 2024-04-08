@@ -25,7 +25,10 @@ def rating_view(request):
             if not save_to_database_result:
                 messages.warning(request, 'Data was not saved because it already exists.')
             
-            process_form_data(form.cleaned_data)
+            if save_to_database_result:
+                process_form_data(form.cleaned_data['url'])
+                
+                
             form = RatingForm()  
     else:
         form = RatingForm()
