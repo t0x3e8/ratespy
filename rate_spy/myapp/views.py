@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
 from .forms import RatingForm
-from .utils import save_to_database, process_form_data
+from .utils import save_to_database
 
 
 # Create your views here.
@@ -24,10 +24,6 @@ def rating_view(request):
             
             if not save_to_database_result:
                 messages.warning(request, 'Data was not saved because it already exists.')
-            
-            if save_to_database_result:
-                process_form_data(form.cleaned_data['url'])
-                
                 
             form = RatingForm()  
     else:

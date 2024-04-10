@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',
+    'django_celery_beat',
     'myapp',
 ]
 
@@ -122,3 +125,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Celery configuration
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'  # RabbitMQ connection URL
+CELERY_RESULT_BACKEND = 'rpc://'
+
+# Celery Beat schedule for periodic tasks
+CELERY_BEAT_SCHEDULE = {
+    'update-ratings': {
+        'task': 'myapp.tasks.update_ratings',
+        'schedule': timedelta(seconds=60),  # Run every 60 seconds
+    },
+}
