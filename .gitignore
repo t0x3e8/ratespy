@@ -1,4 +1,4 @@
 __pycache__
-rate_spy/myapp/migrations/
-rate_spy/db.sqlite3
-rate_spy/celerybeat-schedule*
+code/myapp/migrations/
+code/db.sqlite3
+code/celerybeat-schedule*
