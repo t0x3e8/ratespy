@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from django.utils import timezone
 from datetime import datetime
+import re
 
 @shared_task
 def update_ratings():
@@ -47,6 +48,21 @@ def process_link_setting_data(link_setting_id):
 
     # Find the element containing the reviews count
     reviews_element = soup.find('div', {'class': 'we-customer-ratings__count'}).text.strip()
-    reviews_count = int(reviews_element.split()[0])
+    # Regex pattern to cover different results '345 Ratings' or '5.5k Ratings' or '4.3M Ratings'
+    pattern = r'([\d\.]+)([KkMm]?)\s*Ratings'
+    match = re.search(pattern, reviews_element)
+
+    if match:
+        numeric_part = float(match.group(1))  # Convert to float to handle decimal numbers
+        metric_prefix = match.group(2).lower()
+
+        if metric_prefix == 'k':
+            numeric_part *= 1000  # Multiply by 1000 for 'K' (thousand)
+        elif metric_prefix == 'm':
+            numeric_part *= 1000000  # Multiply by 1000000 for 'M' (million)
+
+        reviews_count = int(numeric_part)
+    else:
+        reviews_count = None  # Or raise an exception, log a warning, etc.
     
     return rating, reviews_count
