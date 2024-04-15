@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Rating Form{% endblock %}
+
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        <li class="{{ message.tags }}">
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+<br>    
+<div><a href="{% url 'table_result_view' %}" target="_blank">Click here to open the table of results.</a></div>
+<div><a href="{% url 'graph_result_view' %}" target="_blank">Click here to open the graph of results.</a></div>
+{% endblock %}

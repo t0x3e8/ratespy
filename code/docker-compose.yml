@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: sh -c "python /code/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=0  # Set: 0 in production, 1 in debug
+
+  celery_worker:
+    build: .
+    command: celery -A rate_spy worker --pool=solo --loglevel=info
+    volumes:
+      - .:/code
+    depends_on:
+      - rabbitmq
+    environment:
+      - DEBUG=0  # Set: 0 in production, 1 in debug
+
+  celery_beat:
+    build: .
+    command: celery -A rate_spy beat -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - rabbitmq
+    environment:
+      - DEBUG=0  # Set: 0 in production, 1 in debug
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
