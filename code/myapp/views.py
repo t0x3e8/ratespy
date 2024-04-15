@@ -22,7 +22,8 @@ def rating_view(request):
             save_to_database_result = save_to_database(
                 form.cleaned_data['name'],
                 form.cleaned_data['url'],
-                form.cleaned_data['interval_in_minutes']
+                0
+                # form.cleaned_data['interval_in_minutes']
                 )
             
             if not save_to_database_result:

@@ -125,13 +125,16 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery configuration
-CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'  # RabbitMQ connection URL
+# CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'  # RabbitMQ connection URL
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'   # RabbitMQ connection URL
 CELERY_RESULT_BACKEND = 'rpc://'
 
 # Celery Beat schedule for periodic tasks
 CELERY_BEAT_SCHEDULE = {
     'update-ratings': {
         'task': 'myapp.tasks.update_ratings',
-        'schedule': timedelta(seconds=60),  # Run every 60 seconds
+        # 'schedule': timedelta(seconds=60),    # Run every 60 seconds
+        'schedule': timedelta(hours=4),         # Run every 4 hours
+        # 'schedule': timedelta(days=1),        # Run every 1 day
     },
 }

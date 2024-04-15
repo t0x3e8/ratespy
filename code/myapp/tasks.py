@@ -4,19 +4,19 @@ from .models import LinkSetting, RatingRecord
 import requests
 from bs4 import BeautifulSoup
 from django.utils import timezone
-from datetime import datetime
+# from datetime import datetime
 import re
 
 @shared_task
 def update_ratings():
     link_settings = LinkSetting.objects.all()
-    current_time = datetime.now().time()
+    # current_time = datetime.now().time()
     
     for setting in link_settings:
         # Check if the current time is a multiple of interval_in_minutes for this setting
-        if current_time.minute % setting.interval_in_minutes == 0:
+        # if current_time.minute % setting.interval_in_minutes == 0:
             # If it is, enqueue the update_ratings_and_reviews task with the link_setting_id
-            update_ratings_and_reviews(setting.id)
+        update_ratings_and_reviews(setting.id)
 
 def update_ratings_and_reviews(link_setting_id):
     link_setting = LinkSetting.objects.filter(id=link_setting_id).first()

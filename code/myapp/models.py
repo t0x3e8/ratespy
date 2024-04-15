@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 
 # Create your models here.
 class LinkSetting (models.Model):
@@ -7,7 +6,7 @@ class LinkSetting (models.Model):
     url = models.CharField(max_length=1024)
     created_at = models.DateTimeField(auto_now_add=True)
     interval_in_hours = models.IntegerField(null=True)
-    interval_in_minutes = models.IntegerField()
+    interval_in_minutes = models.IntegerField(null=True)
     
 class RatingRecord(models.Model):
     link_setting = models.ForeignKey('LinkSetting', on_delete=models.CASCADE)
