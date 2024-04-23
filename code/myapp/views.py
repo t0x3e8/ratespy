@@ -34,6 +34,13 @@ def rating_view(request):
         form = RatingForm()
     return render(request, 'rating.html', {'form': form})
 
+def link_setting_list_view(request):
+    link_settings = LinkSetting.objects.all()
+    return render(request, 'link_setting_list.html', {'link_settings': link_settings})
+
+def link_setting_edit_view(request):
+    return render(request, 'link_setting_edit.html')
+
 def graph_result_view(request):
     link_settings = LinkSetting.objects.all()
     selected_name = request.GET.get('link_setting_name')  # Get selected link setting name from request

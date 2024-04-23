@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Link Settings{% endblock %}
+
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        <li class="{{ message.tags }}">
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<ul>
+    {% for setting in link_settings %}
+    <li>
+        <form method="post" action="{% url 'edit_link_setting' setting.id %}">
+            {% csrf_token %}
+            <label>Name: </label>
+            <input type="text" name="name" value="{{ setting.name }}"><br>
+            <label>URL: </label>
+            <input type="text" name="url" value="{{ setting.url }}"><br>
+            <label>Interval (hours): </label>
+            <input type="number" name="interval_in_hours" value="{{ setting.interval_in_hours }}"><br>
+            <label>Interval (minutes): </label>
+            <input type="number" name="interval_in_minutes" value="{{ setting.interval_in_minutes }}"><br>
+            <button type="submit">Save</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
